@@ -19,12 +19,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: primaryGreen,
-        scaffoldBackgroundColor: white,
+        scaffoldBackgroundColor: darkGrey, // Un fond sombre pour le thème global
         textTheme: const TextTheme(
-          displayLarge: TextStyle(color: primaryGreen, fontWeight: FontWeight.bold),
-          bodyMedium: TextStyle(color: darkGrey),
+          displayLarge: TextStyle(color: white, fontWeight: FontWeight.bold),
+          bodyMedium: TextStyle(color: white),
         ),
-        colorScheme: ColorScheme.fromSeed(seedColor: primaryGreen),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: primaryGreen,
+          brightness: Brightness.dark,
+        ),
       ),
       home: const HomePage(),
     );
@@ -37,45 +40,73 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // Espace réservé pour une image ou un logo professionnel
-            // Vous pouvez remplacer ce conteneur par votre propre image/logo
-            Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.business, // Une icône à l'aspect professionnel
-                size: 80,
-                color: primaryGreen,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Image de fond
+          Image.asset(
+            'assets/images/background.jpg',
+            fit: BoxFit.cover,
+            // Ajout d'un filtre de couleur pour la nuance de vert
+            color: primaryGreen.withOpacity(0.3),
+            colorBlendMode: BlendMode.darken,
+          ),
+          // Superposition pour assombrir et améliorer la lisibilité
+          Container(
+            color: Colors.black.withOpacity(0.5),
+          ),
+          // Contenu centré
+          Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  // Espace réservé pour le logo
+                  Container(
+                    width: 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: white.withOpacity(0.8), width: 2),
+                    ),
+                    child: const Icon(
+                      Icons.business,
+                      size: 80,
+                      color: white,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  // Nom de l'entreprise
+                  Text(
+                    'ELYCORP',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          fontSize: 48,
+                          letterSpacing: 2,
+                          shadows: [
+                            const Shadow(
+                              blurRadius: 10.0,
+                              color: Colors.black,
+                              offset: Offset(2.0, 2.0),
+                            ),
+                          ],
+                        ),
+                  ),
+                  const SizedBox(height: 10),
+                  // Slogan
+                  Text(
+                    'Solutions Professionnelles',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                        ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 40),
-            // Nom de l'entreprise
-            Text(
-              'ELYCORP',
-              style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                fontSize: 48,
-                letterSpacing: 2,
-              ),
-            ),
-            const SizedBox(height: 10),
-            // Slogan
-            Text(
-              'Solutions Professionnelles',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontSize: 18,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
